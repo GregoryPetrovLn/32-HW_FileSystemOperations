@@ -18,8 +18,8 @@ class FSTests {
 	int nRuns = 100;
 	
 	Path source = fs.getPath("./src/telran/io/FileUtils/FileSystemWork.java").toAbsolutePath().normalize();
-	Path newDir1 = fs.getPath("./src/telran/io/FileUtils/placeForCopy1/FileSystemWorkCopyFirstMethod.java").toAbsolutePath().normalize();
-	Path newDir2 = fs.getPath("./src/telran/io/FileUtils/placeForCopy2/FileSystemWorkCopySecondMethod.java").toAbsolutePath().normalize();
+	Path newDir1 = fs.getPath("/Users/gregorypetrov/Documents/FileSystemWorkCopyFirstMethod.java").toAbsolutePath().normalize();
+	Path newDir2 = fs.getPath("/Users/gregorypetrov/Documents/FileSystemWorkCopySecondMethod.java").toAbsolutePath().normalize();
 
 
 
@@ -54,7 +54,7 @@ class FSTests {
 
 	@Test
 	void testDisplayTrue() {
-		Path path = fs.getPath("/Users/gregorypetrov/Documents/Учеба/java/32-HW_FileSystemWorkOperations2").toAbsolutePath().normalize();
+		Path path = fs.getPath(".").toAbsolutePath().normalize();
 		int depth = 0;
 
 		try {
