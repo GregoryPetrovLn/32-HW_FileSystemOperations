@@ -9,13 +9,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import telran.io.FileUtils.FileSystemWork;
-import telran.performance.FSWStandartCopyPerformanceTest;
-import telran.performance.FSWStreamPerformanceTest;
+
 
 class FSTests {
 	FileSystemWork fileWork;
 	FileSystem fs = FileSystems.getDefault();
-	int nRuns = 100;
 	
 	Path source = fs.getPath("./src/telran/io/FileUtils/FileSystemWork.java").toAbsolutePath().normalize();
 	Path newDir1 = fs.getPath("/Users/gregorypetrov/Documents/FileSystemWorkCopyFirstMethod.java").toAbsolutePath().normalize();
@@ -26,6 +24,8 @@ class FSTests {
 	@BeforeEach
 	void setUp() {
 		fileWork = new FileSystemWork();
+		newDir1.toFile().delete();
+		newDir2.toFile().delete();
 	}
 
 	@Test
@@ -37,14 +37,14 @@ class FSTests {
 		int depth = 2;
 
 		try {
-			fileWork.displayDirectoryContent(pathFalse, depth);
+			fileWork.displayDirectoryContentWalkFT(pathFalse, depth);
 			fail();
 		} catch (Throwable e) {
 
 		}
 
 		try {
-			fileWork.displayDirectoryContent(path, depthFalse);
+			fileWork.displayDirectoryContentWalkFT(path, depthFalse);
 			fail();
 		} catch (Throwable e) {
 
@@ -55,14 +55,29 @@ class FSTests {
 	@Test
 	void testDisplayTrue() {
 		Path path = fs.getPath(".").toAbsolutePath().normalize();
-		int depth = 0;
+		int depth = 5;
 
 		try {
-			fileWork.displayDirectoryContent(path, depth);
+			System.out.println("\n\n\tWalkFileTrie method");
+			fileWork.displayDirectoryContentWalkFT(path, depth);
 		} catch (Throwable e) {
 			fail();
 		}
 	}
+	
+	@Test
+	void testDisplayRecursive() {
+		Path path = fs.getPath("/Users/gregorypetrov/Documents").toAbsolutePath().normalize();
+		int depth = 3;
+
+		try {
+			System.out.println("\n\n\tRecursion method");
+			fileWork.displayDirectoryContentRecursive(path, depth);
+		} catch (Throwable e) {
+			fail();
+		}
+	}
+	
 
 	@Test
 	void testFileCFM() {
@@ -73,9 +88,7 @@ class FSTests {
 			fail();
 		}
 		
-		System.out.println("\n\tPerformance Tests\n");
-		FSWStandartCopyPerformanceTest perfTest = new FSWStandartCopyPerformanceTest("FileStandartCopy", nRuns, source, newDir1);
-		perfTest.run();
+		
 	}
 
 	@Test
@@ -87,9 +100,18 @@ class FSTests {
 			fail();
 		}
 		
-		FSWStreamPerformanceTest perfTest = new FSWStreamPerformanceTest("FileByteStreamCopy", nRuns, source, newDir2);
-		perfTest.run();
-		System.out.println("\n============================\n");
+	}
+	
+	@Test
+	void testFileByteArrayStreamCopy() throws IOException {
+
+		try {
+			fileWork.fileByteArrayStreamCopy(source, newDir2);
+		} catch (IOException e) {
+			fail();
+		}
+		
+	
 	}
 	
 	
